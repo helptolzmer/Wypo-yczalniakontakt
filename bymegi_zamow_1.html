@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Wypożyczalnia By Megi — Zapytanie o ofertę</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, Arial, sans-serif; background: #faf8f5; color: #1a1a1a; }
+
+header {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 22px 20px;
+  text-align: center;
+}
+header h1 { font-size: 20px; letter-spacing: 3px; font-weight: 700; }
+header p { font-size: 12px; color: #aaa; margin-top: 5px; letter-spacing: 2px; }
+
+.hero {
+  background: linear-gradient(135deg, #3d1a2e, #1a2a3d);
+  color: #fff;
+  padding: 32px 20px;
+  text-align: center;
+}
+.hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+.hero p { font-size: 14px; color: #ccc; line-height: 1.7; max-width: 400px; margin: 0 auto; }
+.hero .badges { display: flex; justify-content: center; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 6px 14px; font-size: 12px; color: #fff; }
+
+.katalog-btn {
+  display: block;
+  max-width: 480px;
+  margin: 20px auto 0;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  font-family: -apple-system, Arial, sans-serif;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.katalog-btn:active { opacity: 0.8; }
+
+.form-wrap { max-width: 480px; margin: 0 auto; padding: 24px 20px; }
+
+.section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 12px; margin-top: 28px; }
+.section-title:first-child { margin-top: 0; }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.options-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.opt-btn {
+  padding: 14px 8px;
+  background: #fff;
+  border: 2px solid #e0ddd7;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  font-family: -apple-system, Arial, sans-serif;
+  text-align: center;
+  line-height: 1.3;
+}
+.opt-btn .icon { font-size: 22px; display: block; margin-bottom: 5px; }
+.opt-btn.selected { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 6px; }
+.field input, .field textarea, .field select {
+  display: block; width: 100%; padding: 14px; border: 2px solid #e0ddd7; border-radius: 12px;
+  font-size: 16px; background: #fff; color: #1a1a1a; font-family: -apple-system, Arial, sans-serif;
+  -webkit-appearance: none; appearance: none;
+}
+.field textarea { min-height: 100px; resize: none; }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: #1a1a1a; }
+
+.produkty-box {
+  background: #fff;
+  border: 2px solid #e0ddd7;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.produkty-box .pb-header {
+  padding: 12px 14px;
+  background: #f5f2ed;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+  border-bottom: 1px solid #e0ddd7;
+}
+.produkt-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0ede8;
+  gap: 10px;
+}
+.produkt-row:last-child { border-bottom: none; }
+.produkt-name { flex: 1; font-size: 14px; font-weight: 600; }
+.produkt-sub { font-size: 12px; color: #999; font-weight: 400; }
+.qty-ctrl { display: flex; align-items: center; gap: 8px; }
+.qty-btn { width: 32px; height: 32px; border: 2px solid #e0ddd7; border-radius: 8px; background: #fff; font-size: 18px; font-weight: 700; cursor: pointer; font-family: -apple-system, Arial, sans-serif; color: #1a1a1a; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.qty-btn:active { background: #f0ede8; }
+.qty-val { font-size: 16px; font-weight: 700; min-width: 24px; text-align: center; }
+
+.info-box { background: #fff; border: 1px solid #e0ddd7; border-radius: 12px; padding: 16px; margin-bottom: 14px; font-size: 13px; color: #666; line-height: 1.7; }
+.info-box strong { color: #1a1a1a; }
+
+.error { color: #9b2226; font-size: 13px; margin-top: 6px; display: none; }
+
+.submit-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 18px;
+  background: #25d366;
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 17px; font-weight: 700; cursor: pointer;
+  font-family: -apple-system, Arial, sans-serif;
+  margin-top: 24px;
+}
+.submit-btn:active { opacity: 0.85; }
+
+footer { text-align: center; padding: 30px 20px; color: #999; font-size: 12px; line-height: 1.8; }
+footer strong { color: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>✨ BY MEGI</h1>
+  <p>WYPOŻYCZALNIA DEKORACJI — MAŁOPOLSKA I CAŁA POLSKA</p>
+</header>
+
+<div class="hero">
+  <h2>Zapytaj o dostępność</h2>
+  <p>Ponad 300 produktów do wynajęcia na wesela, eventy i uroczystości rodzinne. Działamy na terenie całej Polski.</p>
+  <div class="badges">
+    <span class="badge">💍 Wesela</span>
+    <span class="badge">🎉 Eventy</span>
+    <span class="badge">🚗 Dostawa PL</span>
+    <span class="badge">300+ produktów</span>
+  </div>
+  <a class="katalog-btn" id="katalog-link" href="#" target="_blank">📖 Zobacz katalog produktów</a>
+</div>
+
+<div class="form-wrap">
+
+  <div class="section-title">1. Rodzaj uroczystości</div>
+  <div class="options-grid" id="event-grid">
+    <button class="opt-btn" data-val="Wesele"><span class="icon">💍</span>Wesele</button>
+    <button class="opt-btn" data-val="Chrzciny"><span class="icon">👶</span>Chrzciny</button>
+    <button class="opt-btn" data-val="Urodziny"><span class="icon">🎂</span>Urodziny</button>
+    <button class="opt-btn" data-val="Event firmowy"><span class="icon">🏢</span>Event firmowy</button>
+    <button class="opt-btn" data-val="Komunie"><span class="icon">✝️</span>Komunia</button>
+    <button class="opt-btn" data-val="Inna okazja"><span class="icon">🌟</span>Inna okazja</button>
+  </div>
+  <div class="error" id="err-event">Wybierz rodzaj uroczystości</div>
+
+  <div class="section-title">2. Produkty które Cię interesują</div>
+  <div class="produkty-box">
+    <div class="pb-header">Wybierz ilości (zostaw 0 jeśli nie potrzebujesz)</div>
+    <div class="produkt-row">
+      <div class="produkt-name">Krzesła<div class="produkt-sub">chiavari, bankietowe i inne</div></div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('krzesla',-1)">−</button>
+        <span class="qty-val" id="qty-krzesla">0</span>
+        <button class="qty-btn" onclick="changeQty('krzesla',1)">+</button>
+      </div>
+    </div>
+    <div class="produkt-row">
+      <div class="produkt-name">Stoły<div class="produkt-sub">okrągłe, prostokątne</div></div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('stoly',-1)">−</button>
+        <span class="qty-val" id="qty-stoly">0</span>
+        <button class="qty-btn" onclick="changeQty('stoly',1)">+</button>
+      </div>
+    </div>
+    <div class="produkt-row">
+      <div class="produkt-name">Świeczniki<div class="produkt-sub">różne rozmiary</div></div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('swieczniki',-1)">−</button>
+        <span class="qty-val" id="qty-swieczniki">0</span>
+        <button class="qty-btn" onclick="changeQty('swieczniki',1)">+</button>
+      </div>
+    </div>
+    <div class="produkt-row">
+      <div class="produkt-name">Obrusy<div class="produkt-sub">różne kolory i rozmiary</div></div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('obrusy',-1)">−</button>
+        <span class="qty-val" id="qty-obrusy">0</span>
+        <button class="qty-btn" onclick="changeQty('obrusy',1)">+</button>
+      </div>
+    </div>
+    <div class="produkt-row">
+      <div class="produkt-name">Zastawa stołowa<div class="produkt-sub">talerze, kieliszki, sztućce</div></div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('zastawa',-1)">−</button>
+        <span class="qty-val" id="qty-zastawa">0</span>
+        <button class="qty-btn" onclick="changeQty('zastawa',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Inne produkty z katalogu / dodatkowe uwagi</label>
+    <textarea id="inne-produkty" placeholder="np. łuk kwiatowy, ścianka, wazony, balony... wpisz co Cię interesuje"></textarea>
+  </div>
+
+  <div class="section-title">3. Szczegóły uroczystości</div>
+
+  <div class="field">
+    <label>Data uroczystości</label>
+    <input type="date" id="data-event">
+  </div>
+  <div class="field">
+    <label>Liczba gości</label>
+    <input type="number" id="goscie" placeholder="np. 80" min="1" inputmode="numeric">
+  </div>
+  <div class="field">
+    <label>Miejscowość / adres eventu</label>
+    <input type="text" id="miejsce" placeholder="np. Nowy Sącz, sala weselna Pod Różą">
+  </div>
+
+  <div class="section-title">4. Twoje dane kontaktowe</div>
+
+  <div class="field">
+    <label>Imię i nazwisko</label>
+    <input type="text" id="imie" placeholder="np. Anna Kowalska">
+  </div>
+  <div class="field">
+    <label>Numer telefonu</label>
+    <input type="tel" id="telefon" placeholder="np. 600 123 456" inputmode="numeric">
+  </div>
+
+  <div class="info-box">
+    <strong>📋 Jak to działa?</strong><br>
+    Po kliknięciu przycisku otworzy się WhatsApp z Twoim zapytaniem. Odezwiemy się najszybciej jak to możliwe z wyceną i potwierdzeniem dostępności na Twoją datę.
+  </div>
+
+  <button class="submit-btn" id="btn-wyslij">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.855L.057 23.215a.75.75 0 00.918.919l5.46-1.461A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 01-4.964-1.365l-.355-.212-3.681.985.993-3.594-.231-.369A9.694 9.694 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+    Wyślij zapytanie przez WhatsApp
+  </button>
+
+</div>
+
+<footer>
+  <strong>Wypożyczalnia By Megi</strong><br>
+  Nowy Sącz · Małopolska · cała Polska<br>
+  Tel: <a href="tel:+48698231266" style="color:#1a1a1a">698 231 266</a>
+</footer>
+
+<script>
+var selectedEvent = '';
+var qty = { krzesla:0, stoly:0, swieczniki:0, obrusy:0, zastawa:0 };
+
+// Set min date
+var today = new Date();
+var dd = today.getFullYear()+'-'+(today.getMonth()<9?'0':'')+(today.getMonth()+1)+'-'+(today.getDate()<10?'0':'')+today.getDate();
+document.getElementById('data-event').min = dd;
+
+document.getElementById('katalog-link').href = 'https://helptolzmer.github.io/Wypo-yczalnia/Katalog.pdf';
+document.getElementById('katalog-link').target = '_blank';
+
+function changeQty(key, delta) {
+  qty[key] = Math.max(0, (qty[key]||0) + delta);
+  document.getElementById('qty-'+key).textContent = qty[key];
+}
+
+document.getElementById('event-grid').addEventListener('click', function(e) {
+  var btn = e.target.closest('.opt-btn');
+  if (!btn) return;
+  document.querySelectorAll('#event-grid .opt-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  selectedEvent = btn.getAttribute('data-val');
+  document.getElementById('err-event').style.display = 'none';
+});
+
+document.getElementById('btn-wyslij').addEventListener('click', function() {
+  var ok = true;
+  if (!selectedEvent) { document.getElementById('err-event').style.display = 'block'; ok = false; }
+
+  var imie = document.getElementById('imie').value.trim();
+  var telefon = document.getElementById('telefon').value.trim();
+  var miejsce = document.getElementById('miejsce').value.trim();
+  var dataEvent = document.getElementById('data-event').value;
+
+  if (!imie || !telefon || !miejsce || !dataEvent) {
+    alert('Uzupelnij wymagane pola: imie, telefon, miejsce i date.');
+    ok = false;
+  }
+  if (!ok) return;
+
+  var goscie = document.getElementById('goscie').value.trim();
+  var inneProd = document.getElementById('inne-produkty').value.trim();
+
+  var produktyLista = [];
+  if (qty.krzesla > 0) produktyLista.push('Krzesla: '+qty.krzesla+' szt.');
+  if (qty.stoly > 0) produktyLista.push('Stoly: '+qty.stoly+' szt.');
+  if (qty.swieczniki > 0) produktyLista.push('Swieczniki: '+qty.swieczniki+' szt.');
+  if (qty.obrusy > 0) produktyLista.push('Obrusy: '+qty.obrusy+' szt.');
+  if (qty.zastawa > 0) produktyLista.push('Zastawa stolowa: '+qty.zastawa+' kompletow');
+
+  var msg = '✨ *ZAPYTANIE — Wypozyczalnia By Megi*\n\n';
+  msg += '👤 *Zamawiajacy:* ' + imie + '\n';
+  msg += '📞 *Telefon:* ' + telefon + '\n';
+  msg += '🎉 *Rodzaj uroczystosci:* ' + selectedEvent + '\n';
+  msg += '📅 *Data:* ' + dataEvent + '\n';
+  msg += '📍 *Miejsce:* ' + miejsce + '\n';
+  if (goscie) msg += '👥 *Liczba gosci:* ' + goscie + '\n';
+  msg += '\n';
+  if (produktyLista.length > 0) {
+    msg += '📦 *Produkty:*\n' + produktyLista.join('\n') + '\n';
+  }
+  if (inneProd) msg += '\n💬 *Inne / uwagi:* ' + inneProd + '\n';
+
+  var url = 'https://wa.me/48698231266?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+});
+</script>
+</body>
+</html>
